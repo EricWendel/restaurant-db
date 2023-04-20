@@ -10,17 +10,26 @@
 </head>
 <body>
   <h1>Restaurant Name</h1>
-  <!-- <?php
-    echo '<h3>This is PHP inside of html :)</h3>';
-    ?> -->
-  <form action="login.php">
-    <button class="right" type="submit"><b>Login</b></button>
-  </form>
-
+  
   <div class="content text-center">
-    <h1>Restaurant</h1>
+    <h1>Login</h1>
+    <form>
+      <div class="form-line">
+        <label>Email:</label>
+        <input type="text">
+      </div>
+      <div class="form-line">
+        <label>Password:</label>
+        <input type="text">
+      </div>
+    </form>
+
     
+
   </div>
+
+  
+  
 
 
 </body>
