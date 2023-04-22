@@ -1,3 +1,35 @@
+<?php
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $dbname = "test";
+
+  // Create connection
+  $conn = new mysqli($servername, $username, $password, $dbname);
+
+  // Check connection
+  if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+  }
+  echo "Connected successfully";
+  if (isset($_POST['submit'])) {
+    $reservation_id = 1;
+    $user_id = 2;
+    $start_time = $_POST['start_time'];
+    $end_time = $_POST['end_time'];
+    $comment = $_POST['comment'];
+    // Insert data into database
+    $sql = "INSERT INTO reservation (reservation_id, user_id, start_time, end_time, comment) VALUES ('$reservation_id', '$user_id', '$start_time', '$end_time', '$comment')";
+    if (mysqli_query($conn, $sql)) {
+        echo "Record added successfully";
+    } else {
+        echo "Error adding record: " . mysqli_error($conn);
+    }
+  } else {
+    echo "No form data received";
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +47,7 @@
   </form>
   <div class="content text-center">
     <h1>Make a Reservation</h1>
+
     <form method="POST">
       <div>
         <label for="start_time">Reservation start date & time:</label>
@@ -25,22 +58,17 @@
         <input type="datetime-local" id="end_time" name="end_time">
       </div>
       <div>
-        <label for="comments">Additional Comments:</label>
-        <textarea id="comments" name="comments" rows="5" cols="30"></textarea>
+        <label for="comment">Additional Comments:</label>
+        <textarea id="comment" name="comment" rows="5" cols="30"></textarea>
       </div>
       <div>
-        <input type="submit" value="Submit">   
+        <input type="submit" name="submit" value="Submit">   
       </div>
     </form>
   </div>
 
   <?php
-    if (isset($_POST['start_time'])) {
-      $start_time = $_POST['start_time'];
-      echo "You selected: " . $start_time;
-    } else {
-      echo "No form data received";
-    }
+
   ?>
 </body>
 </html>
