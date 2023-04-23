@@ -31,6 +31,12 @@
     <form action="login.php">
       <button type="submit"><b>Login</b></button>
     </form>
+    <form action="test.php">
+      <button type="submit"><b>test</b></button>
+    </form>
+    <form action="makeUser.php">
+      <button type="submit"><b>make user</b></button>
+    </form>
   </div>
 
 
