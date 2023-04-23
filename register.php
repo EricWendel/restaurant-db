@@ -22,19 +22,19 @@
     <form action="" method="post">
     <div class="form-line">
         <label>First Name:</label>
-        <input type="text" name="first_name">
+        <input type="text" name="first_name" value="<?php echo @$_POST['first_name']; ?>">
       </div>
       <div class="form-line">
         <label>Last Name:</label>
-        <input type="text" name="last_name">
+        <input type="text" name="last_name" value="<?php echo @$_POST['last_name']; ?>">
       </div>
       <div class="form-line">
         <label>Email:</label>
-        <input type="text" name="email">
+        <input type="text" name="email" value="<?php echo @$_POST['email']; ?>">
       </div>
       <div class="form-line">
         <label>Password:</label>
-        <input type="text" name="password">
+        <input type="text" name="password" value="<?php echo @$_POST['password']; ?>">
       </div>
       <button type="submit" name="submit">Submit</button>
 
