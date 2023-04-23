@@ -26,7 +26,7 @@
         echo "Error adding record: " . mysqli_error($conn);
     }
   } else {
-    echo "No form data received";
+    echo "No form data received!";
   }
 ?>
 
@@ -47,7 +47,24 @@
   </form>
   <div class="content text-center">
     <h1>Make a Reservation</h1>
+    <div>
+      <?php
+        $query = "SELECT * FROM reservation";
+        $result = mysqli_query($conn, $query);
 
+        // Generate an HTML table
+        echo "<table>";
+        echo "<tr><th>From</th><th>To</th><th>Comments</th></tr>";
+        while ($row = mysqli_fetch_assoc($result)) {
+          echo "<tr><td>" . $row['start_time'] . "</td><td>" . $row['end_time'] . "</td><td>" . $row['comment'] . "</td></tr>";
+        }
+        echo "</table>";
+
+        // Close the database connection
+        mysqli_close($conn);
+      ?>
+    </div>
+    
     <form method="POST">
       <div>
         <label for="start_time">Reservation start date & time:</label>
