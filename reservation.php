@@ -13,13 +13,12 @@
   }
   echo "Connected successfully";
   if (isset($_POST['submit'])) {
-    $reservation_id = 1;
     $user_id = 2;
     $start_time = $_POST['start_time'];
     $end_time = $_POST['end_time'];
     $comment = $_POST['comment'];
     // Insert data into database
-    $sql = "INSERT INTO reservation (reservation_id, user_id, start_time, end_time, comment) VALUES ('$reservation_id', '$user_id', '$start_time', '$end_time', '$comment')";
+    $sql = "INSERT INTO reservation (user_id, start_time, end_time, comment) VALUES ('$user_id', '$start_time', '$end_time', '$comment')";
     if (mysqli_query($conn, $sql)) {
         echo "Record added successfully";
     } else {
@@ -83,9 +82,5 @@
       </div>
     </form>
   </div>
-
-  <?php
-
-  ?>
 </body>
 </html>
