@@ -3,11 +3,11 @@
 function makeUser($first_name, $last_name, $email, $password, $is_admin){
     $servername = "localhost";
     $username = "root";
-    $password = "";
+    $dbpassword = "";
     $dbname = "restaurantV2";
 
     // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
     // Check connection
     if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
