@@ -13,8 +13,8 @@ function makeUser($first_name, $last_name, $email, $password, $is_admin){
     die("Connection failed: " . $conn->connect_error);
     } 
 
-    $sql = "INSERT INTO user (user_id, first_name, last_name, email, password, is_admin)
-    VALUES ('100', '$first_name', '$last_name', '$email', '$password', 0)";
+    $sql = "INSERT INTO user (first_name, last_name, email, password, is_admin)
+    VALUES ('$first_name', '$last_name', '$email', '$password', 0)";
 
     if ($conn->query($sql) === TRUE) {
         //echo "New record created successfully";
