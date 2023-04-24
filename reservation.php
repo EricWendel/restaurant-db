@@ -12,8 +12,8 @@
       die("Connection failed: " . $conn->connect_error);
   }
   echo "Connected successfully";
-  if (isset($_POST['submit'])) {
-    $user_id = 2;
+  if (isset($_POST['submit']) && isset($_COOKIE['user_id'])) {
+    $user_id = $_COOKIE['user_id'];;
     $start_time = $_POST['start_time'];
     $end_time = $_POST['end_time'];
     $comment = $_POST['comment'];
@@ -21,6 +21,7 @@
     $sql = "INSERT INTO reservation (user_id, start_time, end_time, comment) VALUES ('$user_id', '$start_time', '$end_time', '$comment')";
     if (mysqli_query($conn, $sql)) {
         echo "Record added successfully";
+        echo $user_id;
     } else {
         echo "Error adding record: " . mysqli_error($conn);
     }

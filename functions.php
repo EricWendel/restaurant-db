@@ -18,6 +18,9 @@ function makeUser($first_name, $last_name, $email, $password, $is_admin){
 
     if ($conn->query($sql) === TRUE) {
         //echo "New record created successfully";
+        $user_id = $conn->insert_id;
+        echo $user_id;
+        setcookie("user_id", $user_id, time() + 3600);
         $conn->close();
         return "success";
     } else {
