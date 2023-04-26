@@ -1,33 +1,16 @@
 <?php
-  $servername = "localhost";
-  $username = "root";
-  $password = "";
-  $dbname = "restaurantV2";
-
-  // Create connection
-  $conn = new mysqli($servername, $username, $password, $dbname);
-
-  // Check connection
-  if ($conn->connect_error) {
-      die("Connection failed: " . $conn->connect_error);
-  }
-  echo "Connected successfully";
+  require "functions.php";
   if (isset($_POST['submit']) && isset($_COOKIE['user_id'])) {
     $user_id = $_COOKIE['user_id'];;
     $start_time = $_POST['start_time'];
     $end_time = $_POST['end_time'];
     $comment = $_POST['comment'];
-    // Insert data into database
-    $sql = "INSERT INTO reservation (user_id, start_time, end_time, comment) VALUES ('$user_id', '$start_time', '$end_time', '$comment')";
-    if (mysqli_query($conn, $sql)) {
-        echo "Record added successfully";
-        echo $user_id;
-    } else {
-        echo "Error adding record: " . mysqli_error($conn);
-    }
-  } else {
-    echo "No form data received!";
+    createReservation($start_time, $end_time, $comment);
+  } 
+  else {
+    echo "Create Reservation Failed!";
   }
+
 ?>
 
 <!DOCTYPE html>
@@ -46,25 +29,13 @@
     <button type="submit"><b>Back</b></button>
   </form>
   <div class="content text-center">
-    <h1>Make a Reservation</h1>
+    <h1>Reservations</h1>
     <div>
       <?php
-        $query = "SELECT * FROM reservation";
-        $result = mysqli_query($conn, $query);
-
-        // Generate an HTML table
-        echo "<table>";
-        echo "<tr><th>From</th><th>To</th><th>Comments</th></tr>";
-        while ($row = mysqli_fetch_assoc($result)) {
-          echo "<tr><td>" . $row['start_time'] . "</td><td>" . $row['end_time'] . "</td><td>" . $row['comment'] . "</td></tr>";
-        }
-        echo "</table>";
-
-        // Close the database connection
-        mysqli_close($conn);
+        getReservations();
       ?>
     </div>
-    
+    <h1>Create Reservation</h1>
     <form method="POST">
       <div>
         <label for="start_time">Reservation start date & time:</label>

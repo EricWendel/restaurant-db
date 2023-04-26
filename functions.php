@@ -57,6 +57,58 @@ function getLoggedInUser(){
     } 
 }
 
+function createReservation($start_time, $end_time, $comment){
+    $user_id = $_COOKIE["user_id"];
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Insert data into database
+    $sql = "INSERT INTO reservation (user_id, start_time, end_time, comment) VALUES ('$user_id', '$start_time', '$end_time', '$comment')";
+    if (mysqli_query($conn, $sql)) {
+        echo "Reservation added successfully";
+    } else {
+        echo "Error adding record: " . mysqli_error($conn);
+    }
+    $conn->close();
+}
+
+function getReservations(){
+    $query = "SELECT * FROM reservation";
+    // Create connection
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    $result = mysqli_query($conn, $query);
+
+    // Generate an HTML table
+    echo "<table>";
+    echo "<tr><th>From</th><th>To</th><th>Comments</th></tr>";
+    while ($row = mysqli_fetch_assoc($result)) {
+      echo "<tr><td>" . $row['start_time'] . "</td><td>" . $row['end_time'] . "</td><td>" . $row['comment'] . "</td></tr>";
+    }
+    echo "</table>";
+
+    // Close the database connection
+    mysqli_close($conn);
+}
+
 function makeMenuItem($item_name, $size, $price){
     $servername = "localhost";
     $username = "root";
