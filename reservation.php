@@ -22,6 +22,7 @@
   <meta name="description" content="" />
   <link rel="icon" href="favicon.png">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="reservation.css">
 </head>
 <body>
   <h1>Restaurant Name</h1>

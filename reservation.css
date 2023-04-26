@@ -1,0 +1,26 @@
+table, th, td {
+    border: 1px solid;
+    margin-right: none;
+    padding-right: none;
+
+}
+table{
+    min-width: 1000px;
+    table-layout: fixed;
+    width: 100%;
+}
+th:nth-child(1),
+td:nth-child(1) {
+  width: 20%;
+}
+th:nth-child(2),
+td:nth-child(2) {
+  width: 20%;
+}
+th:nth-child(3),
+td:nth-child(3) {
+  width: 45%;
+}
+td:nth-child(4) {
+    width: 15%;
+  }

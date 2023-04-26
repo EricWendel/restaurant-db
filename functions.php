@@ -106,10 +106,14 @@ function getReservations(){
             // echo '<td><a href="deleteReservation.php?id='. $row['reservation_id'] .'">Delete</a></td>';
                 echo '
                     <form method="POST">
-                        <td> <button type="submit" name="deleteReservation" value='.$row['reservation_id'].'>Delete</button> </td>
+                        <td> <button type="submit" name="deleteReservation" value='.$row['reservation_id'].'>Delete</button>
+                        <a href="updateReservation.php?id='. $row['reservation_id'] .'">Update</a></td>
                     </form> 
                 ';
-                echo '<td><a href="updateReservation.php?id='. $row['reservation_id'] .'">Update</a></td>';
+                echo '';
+            }
+            else{
+                echo '<td></td>';
             }
             echo "</tr>";
         }
