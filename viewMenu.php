@@ -5,8 +5,14 @@
   } else {
     $logInMessage = "Logged in as: " . getLoggedInUser();
   }
-  if(isset($_POST['submit'])){
+  if(isset($_POST['submit'])){ // create
     $resp = makeMenuItem($_POST['item_name'], $_POST['size'], $_POST['price']);
+  }
+  if(isset($_POST['submit2'])){ // update
+    echo "testttt";
+  }
+  if(isset($_POST['submit3'])){ // delete
+    $resp3 = deleteMenuItem($_POST['item_id_delete']);
   }
 ?>
 <!DOCTYPE html>
@@ -83,11 +89,50 @@
         $conn->close();
     ?>
 
-        <h1>Edit an item:</h1>
+    <h1>Update an item:</h1>
+    <form action="" method="post">
+    <div class="form-line">
+        <label>Item Number:</label>
+        <input type="number" step="1" name="item_name">
+      </div>
+    <div class="form-line">
+        <input type="checkbox" name="nameCheck">
+        <label>New Item Name:</label>
+        <input type="text" name="item_name_new">
+      </div>
+      <div class="form-line">
+        <input type="checkbox" name="sizeCheck">
+        <label>New Size:</label>
+        <input type="text" name="size_new">
+      </div>
+      <div class="form-line">
+        <input type="checkbox" name="priceCheck">
+        <label>New Price:</label>
+        <input type="number" step="0.01" name="price_new">
+      </div>
+      <button type="submit" name="submit2">Update</button>
+    </form>
+    <?php
+            if(@$resp != "success"){?>
+                <p><?php echo @$resp ?></p>
+            <?php
+            }
+        ?>
 
-
-        <h1>Delete an item:</h1>
-
+    <h1>Delete an item:</h1>
+    <form action="" method="post">
+    <div class="form-line">
+        <label>Item Number:</label>
+        <input type="number" step="1" name="item_id_delete">
+      </div>
+      <button type="submit" name="submit3">Delete</button>
+    </form>
+    <?php
+        if(@$resp3 != "success"){?>
+            <p><?php echo @$resp3 ?></p>
+        <?php
+        }
+    ?>
 
   </div>
 

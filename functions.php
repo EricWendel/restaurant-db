@@ -101,4 +101,36 @@ function makeMenuItem($item_name, $size, $price){
     } 
 }
 
+function deleteMenuItem($item_id){
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    } 
+
+    $trimId = trim($item_id);
+
+    if($trimId == ""){
+        return "";
+    }
+
+    $sql = "DELETE FROM menu_item WHERE menu_item_id = " . $trimId;
+
+    if ($conn->query($sql) === TRUE) {
+        //echo "New record created successfully";
+        $conn->close();
+        return "success";
+    } else {
+        //echo "Error: " . $sql . "<br>" . $conn->error;
+        $conn->close();
+        return "fail";
+    } 
+}
+
 ?>
