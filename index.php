@@ -1,3 +1,12 @@
+<?php
+  require "functions.php";
+  if(!isset($_COOKIE["user_id"])) {
+    $logInMessage = "You are not logged in";
+  } else {
+    $logInMessage = "Logged in as: " . getLoggedInUser();
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +19,9 @@
 </head>
 <body>
   <h1>Restaurant Name</h1>
+  <?php
+    echo $logInMessage;
+  ?>
   <!-- <?php
     echo '<h3>This is PHP inside of html :)</h3>';
     ?> -->
