@@ -49,6 +49,9 @@
     <form action="makeItem.php">
       <button type="submit"><b>make item</b></button>
     </form>
+    <form action="viewMenu.php">
+      <button type="submit"><b>view menu</b></button>
+    </form>
     <!-- <form action="test.php">
       <button type="submit"><b>test</b></button>
     </form>

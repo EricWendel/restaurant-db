@@ -70,8 +70,25 @@ function makeMenuItem($item_name, $size, $price){
     die("Connection failed: " . $conn->connect_error);
     } 
 
+    $trimName = trim($item_name);
+    $trimSize = trim($size);
+    $trimPrice = trim($price);
+
+    if($trimName == "" && $trimSize == "" && $trimPrice == ""){
+        return ""; // don't display messgae if they aren't trying to make an item
+    }
+    if($trimName == ""){
+        return "item name can't be empty";
+    }
+    if($trimSize == ""){
+        return "size can't be empty";
+    }
+    if($trimPrice == ""){
+        return "price can't be empty";
+    }
+
     $sql = "INSERT INTO menu_item (name, size, price)
-    VALUES ('$item_name', '$size', '$price')";
+    VALUES ('$trimName', '$trimSize', '$trimPrice')";
 
     if ($conn->query($sql) === TRUE) {
         //echo "New record created successfully";
