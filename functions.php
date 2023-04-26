@@ -83,6 +83,7 @@ function createReservation($start_time, $end_time, $comment){
 }
 
 function getReservations(){
+    require "deleteReservation.php";
     $query = "SELECT * FROM reservation";
     // Create connection
     $servername = "localhost";
@@ -101,12 +102,47 @@ function getReservations(){
     echo "<table>";
     echo "<tr><th>From</th><th>To</th><th>Comments</th></tr>";
     while ($row = mysqli_fetch_assoc($result)) {
-      echo "<tr><td>" . $row['start_time'] . "</td><td>" . $row['end_time'] . "</td><td>" . $row['comment'] . "</td></tr>";
+        echo "<tr> <td>" . $row['start_time'] . "</td> <td>" . $row['end_time'] . "</td> <td>" . $row['comment'] . "</td>";
+        if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'] === $row['user_id']){
+           // echo '<td><a href="deleteReservation.php?id='. $row['reservation_id'] .'">Delete</a></td>';
+            echo '
+                <form method="POST">
+                    <td> <button type="submit" name="deleteReservation" value='.$row['reservation_id'].'>Delete</button> </td>
+                </form> 
+            ';
+        }
+        echo "</tr>";
     }
     echo "</table>";
-
     // Close the database connection
     mysqli_close($conn);
+    if (isset($_POST['deleteReservation'])) {
+        $reservation_id = $_POST['deleteReservation'];
+        deleteReservation($reservation_id);
+    }
+}
+
+function deleteReservation($reservation_id){
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    } 
+
+    $sql = "DELETE FROM reservation WHERE reservation_id = " . $reservation_id;
+
+    if ($conn->query($sql) === TRUE) {
+        return "success";
+    } else {
+        return "fail";
+    } 
+    $conn->close();
 }
 
 function makeMenuItem($item_name, $size, $price){
