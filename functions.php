@@ -57,4 +57,31 @@ function getLoggedInUser(){
     } 
 }
 
+function makeMenuItem($item_name, $size, $price){
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    } 
+
+    $sql = "INSERT INTO menu_item (name, size, price)
+    VALUES ('$item_name', '$size', '$price')";
+
+    if ($conn->query($sql) === TRUE) {
+        //echo "New record created successfully";
+        $conn->close();
+        return "success";
+    } else {
+        //echo "Error: " . $sql . "<br>" . $conn->error;
+        $conn->close();
+        return "fail";
+    } 
+}
+
 ?>
