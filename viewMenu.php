@@ -9,7 +9,7 @@
     $resp = makeMenuItem($_POST['item_name'], $_POST['size'], $_POST['price']);
   }
   if(isset($_POST['submit2'])){ // update
-    echo "testttt";
+    $resp2 = updateMenuItem($_POST['item_id_update'], $_POST['item_name_new'], $_POST['size_new'], $_POST['price_new'], $_POST['nameCheck'], $_POST['sizeCheck'], $_POST['priceCheck']);
   }
   if(isset($_POST['submit3'])){ // delete
     $resp3 = deleteMenuItem($_POST['item_id_delete']);
@@ -93,7 +93,7 @@
     <form action="" method="post">
     <div class="form-line">
         <label>Item Number:</label>
-        <input type="number" step="1" name="item_name">
+        <input type="number" step="1" name="item_id_update">
       </div>
     <div class="form-line">
         <input type="checkbox" name="nameCheck">
@@ -113,11 +113,12 @@
       <button type="submit" name="submit2">Update</button>
     </form>
     <?php
-            if(@$resp != "success"){?>
-                <p><?php echo @$resp ?></p>
-            <?php
-            }
-        ?>
+        if(@$resp2 != "success"){?>
+            <p><?php echo @$resp2 ?></p>
+        <?php
+        }
+    ?>
+        
 
     <h1>Delete an item:</h1>
     <form action="" method="post">

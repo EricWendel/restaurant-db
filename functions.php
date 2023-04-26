@@ -91,11 +91,76 @@ function makeMenuItem($item_name, $size, $price){
     VALUES ('$trimName', '$trimSize', '$trimPrice')";
 
     if ($conn->query($sql) === TRUE) {
-        //echo "New record created successfully";
         $conn->close();
         return "success";
     } else {
-        //echo "Error: " . $sql . "<br>" . $conn->error;
+        $conn->close();
+        return "fail";
+    } 
+}
+
+function updateMenuItem($item_id, $item_name, $size, $price, $nameCheck, $sizeCheck, $priceCheck){
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    } 
+
+    $trimId = trim($item_id);
+    $trimName = trim($item_name);
+    $trimSize = trim($size);
+    $trimPrice = trim($price);
+
+
+    if($trimId == ""){
+        return "";
+    }
+    if($nameCheck && $trimName == ""){
+        return "item name can't be empty";
+    }
+    if($sizeCheck && $trimSize == ""){
+        return "size can't be empty";
+    }
+    if($priceCheck &&$trimPrice == ""){
+        return "price can't be empty";
+    }
+
+    if(!($nameCheck || $sizeCheck || $priceCheck)){
+        return "";
+    }
+
+    $sql = "UPDATE menu_item SET ";
+    $comma = "no";
+    if($nameCheck){
+        $sql .= "name = '$trimName'";
+        $comma = "yes";
+    }
+    if($sizeCheck){
+        if($comma == "yes"){
+            $sql .= ", ";
+        }
+        $sql .= "size = '$trimSize'";
+        $comma = "yes";
+    }
+    if($priceCheck){
+        if($comma == "yes"){
+            $sql .= ", ";
+        }
+        $sql .= "price = '$trimPrice'";
+    }
+    $sql .= " WHERE menu_item_id = $trimId";
+    
+
+    if ($conn->query($sql) === TRUE) {
+        $conn->close();
+        return "success";
+    } else {
         $conn->close();
         return "fail";
     } 
@@ -123,11 +188,9 @@ function deleteMenuItem($item_id){
     $sql = "DELETE FROM menu_item WHERE menu_item_id = " . $trimId;
 
     if ($conn->query($sql) === TRUE) {
-        //echo "New record created successfully";
         $conn->close();
         return "success";
     } else {
-        //echo "Error: " . $sql . "<br>" . $conn->error;
         $conn->close();
         return "fail";
     } 
