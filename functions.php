@@ -83,7 +83,6 @@ function createReservation($start_time, $end_time, $comment){
 }
 
 function getReservations(){
-    require "deleteReservation.php";
     $query = "SELECT * FROM reservation";
     // Create connection
     $servername = "localhost";
@@ -110,6 +109,7 @@ function getReservations(){
                     <td> <button type="submit" name="deleteReservation" value='.$row['reservation_id'].'>Delete</button> </td>
                 </form> 
             ';
+            echo '<td><a href="updateReservation.php?id='. $row['reservation_id'] .'">Update</a></td>';
         }
         echo "</tr>";
     }
@@ -120,6 +120,29 @@ function getReservations(){
         $reservation_id = $_POST['deleteReservation'];
         deleteReservation($reservation_id);
     }
+}
+
+function updateReservation($reservation_id, $start_time, $end_time, $comment){
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    } 
+
+    $sql = "UPDATE reservation SET start_time='".$start_time."', end_time='".$end_time."', comment='".$comment."' WHERE reservation_id = $reservation_id";
+
+    if ($conn->query($sql) === TRUE) {
+        return "success";
+    } else {
+        return "fail";
+    } 
+    $conn->close();
 }
 
 function deleteReservation($reservation_id){
