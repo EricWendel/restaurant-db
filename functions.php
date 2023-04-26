@@ -20,7 +20,7 @@ function makeUser($first_name, $last_name, $email, $password, $is_admin){
         //echo "New record created successfully";
         $user_id = $conn->insert_id;
         echo $user_id;
-        setcookie("user_id", $user_id, time() + 3600);
+        setcookie("user_id", $user_id, time() + 99999);
         $conn->close();
         return "success";
     } else {
@@ -98,22 +98,22 @@ function getReservations(){
     $result = mysqli_query($conn, $query);
 
     // Generate an HTML table
-    echo "<table>";
-    echo "<tr><th>From</th><th>To</th><th>Comments</th></tr>";
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo "<tr> <td>" . $row['start_time'] . "</td> <td>" . $row['end_time'] . "</td> <td>" . $row['comment'] . "</td>";
-        if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'] === $row['user_id']){
-           // echo '<td><a href="deleteReservation.php?id='. $row['reservation_id'] .'">Delete</a></td>';
-            echo '
-                <form method="POST">
-                    <td> <button type="submit" name="deleteReservation" value='.$row['reservation_id'].'>Delete</button> </td>
-                </form> 
-            ';
-            echo '<td><a href="updateReservation.php?id='. $row['reservation_id'] .'">Update</a></td>';
+        echo "<table>";
+        echo "<tr><th>From</th><th>To</th><th>Comments</th></tr>";
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "<tr> <td>" . date('F j, Y, g:i a', strtotime($row['start_time'])) . "</td> <td>" . date('F j, Y, g:i a', strtotime($row['end_time'])) . "</td> <td>" . $row['comment'] . "</td>";
+            if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'] === $row['user_id']){
+            // echo '<td><a href="deleteReservation.php?id='. $row['reservation_id'] .'">Delete</a></td>';
+                echo '
+                    <form method="POST">
+                        <td> <button type="submit" name="deleteReservation" value='.$row['reservation_id'].'>Delete</button> </td>
+                    </form> 
+                ';
+                echo '<td><a href="updateReservation.php?id='. $row['reservation_id'] .'">Update</a></td>';
+            }
+            echo "</tr>";
         }
-        echo "</tr>";
-    }
-    echo "</table>";
+        echo "</table>";
     // Close the database connection
     mysqli_close($conn);
     if (isset($_POST['deleteReservation'])) {
