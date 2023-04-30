@@ -6,6 +6,13 @@ function makeUser($first_name, $last_name, $email, $password, $is_admin){
     $dbpassword = "";
     $dbname = "restaurantV2";
 
+    $sqlAdmin = 0;
+    setcookie("admin", 0, time() + 99999);
+    if($is_admin){
+        $sqlAdmin = 1;
+        setcookie("admin", 1, time() + 99999);
+    }
+
     // Create connection
     $conn = new mysqli($servername, $username, $dbpassword, $dbname);
     // Check connection
@@ -14,7 +21,7 @@ function makeUser($first_name, $last_name, $email, $password, $is_admin){
     } 
 
     $sql = "INSERT INTO user (first_name, last_name, email, password, is_admin)
-    VALUES ('$first_name', '$last_name', '$email', '$password', 0)";
+    VALUES ('$first_name', '$last_name', '$email', '$password', $sqlAdmin)";
 
     if ($conn->query($sql) === TRUE) {
         //echo "New record created successfully";
@@ -49,7 +56,13 @@ function getLoggedInUser(){
         //echo "New record created successfully";
         $row = $result->fetch_assoc();
         $conn->close();
-        return $row["first_name"] . " " . $row["last_name"];
+        if($row["is_admin"]){
+            return $row["first_name"] . " " . $row["last_name"] . ", Admin user" ;
+        }
+        else{
+            return $row["first_name"] . " " . $row["last_name"] . ", Customer user" ;
+        }
+        
     } else {
         //echo "Error: " . $sql . "<br>" . $conn->error;
         $conn->close();

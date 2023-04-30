@@ -1,7 +1,7 @@
 <?php
   require "functions.php";
   if(isset($_POST['submit'])){
-    $resp = makeUser($_POST['first_name'], $_POST['last_name'], $_POST['email'], $_POST['password'], 0);
+    $resp = makeUser($_POST['first_name'], $_POST['last_name'], $_POST['email'], $_POST['password'], $_POST['adminCheck']);
   }
 ?>
 <!DOCTYPE html>
@@ -35,6 +35,10 @@
       <div class="form-line">
         <label>Password:</label>
         <input type="text" name="password" value="<?php echo @$_POST['password']; ?>">
+      </div>
+      <div class="form-line">
+        <input type="checkbox" name="adminCheck">
+        <label>Admin User</label>
       </div>
       <button type="submit" name="submit">Submit</button>
 
