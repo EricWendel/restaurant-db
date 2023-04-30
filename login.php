@@ -1,4 +1,10 @@
 <?php
+  require "functions.php";
+  if(!isset($_COOKIE["user_id"])) {
+    $logInMessage = "You are not logged in";
+  } else {
+    $logInMessage = "Logged in as: " . getLoggedInUser();
+  }
   $servername = "localhost";
   $username = "root";
   $password = "";
@@ -47,7 +53,12 @@
 </head>
 <body>
   <h1>Restaurant Name</h1>
-  
+  <?php
+    echo $logInMessage;
+  ?>
+  <form action="index.php">
+    <button type="submit"><b>Home</b></button>
+  </form>
   <div class="content text-center">
     <h1>Login</h1>
     <form method="POST">

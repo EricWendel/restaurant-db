@@ -1,5 +1,10 @@
 <?php
   require "functions.php";
+  if(!isset($_COOKIE["user_id"])) {
+    $logInMessage = "You are not logged in";
+  } else {
+    $logInMessage = "Logged in as: " . getLoggedInUser();
+  }
   if (isset($_POST['createReservation']) && isset($_COOKIE['user_id'])) {
     $user_id = $_COOKIE['user_id'];;
     $start_time = $_POST['start_time'];
@@ -25,8 +30,11 @@
 </head>
 <body>
   <h1>Restaurant Name</h1>
+  <?php
+    echo $logInMessage;
+  ?>
   <form action="index.php">
-    <button type="submit"><b>Back</b></button>
+    <button type="submit"><b>Home</b></button>
   </form>
   <div class="content text-center">
     <h1>Reservations</h1>

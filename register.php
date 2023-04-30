@@ -1,5 +1,10 @@
 <?php
   require "functions.php";
+  if(!isset($_COOKIE["user_id"])) {
+    $logInMessage = "You are not logged in";
+  } else {
+    $logInMessage = "Logged in as: " . getLoggedInUser();
+  }
   if(isset($_POST['submit'])){
     $resp = makeUser($_POST['first_name'], $_POST['last_name'], $_POST['email'], $_POST['password'], $_POST['adminCheck']);
   }
@@ -16,7 +21,12 @@
 </head>
 <body>
   <h1>Restaurant Name</h1>
-  
+  <?php
+    echo $logInMessage;
+  ?>
+  <form action="index.php">
+    <button type="submit"><b>Home</b></button>
+  </form>
   <div class="content text-center">
     <h1>Make an Account</h1>
     <form action="" method="post">

@@ -22,12 +22,6 @@
   <?php
     echo $logInMessage;
   ?>
-  <!-- <?php
-    echo '<h3>This is PHP inside of html :)</h3>';
-    ?> -->
-  <form action="login.php">
-    <button class="right" type="submit"><b>Login</b></button>
-  </form>
 
   <div class="content text-center">
     <h1>Restaurant</h1>
