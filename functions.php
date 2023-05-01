@@ -495,7 +495,7 @@ function addToOrder($order_id, $menu_item_id){
     } 
 }
 
-function deleteOrder($order_id){
+function deleteOrder($order_id, $is_admin, $user_id){
     $servername = "localhost";
     $username = "root";
     $dbpassword = "";
@@ -512,6 +512,18 @@ function deleteOrder($order_id){
 
     if($trimId == ""){
         return "";
+    }
+
+    if($is_admin != 1){
+        $sql3 = "SELECT * FROM orders WHERE order_id = " . $trimId;
+        $result = $conn->query($sql3);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            if($row["user_id"] != $user_id){
+                $conn->close();
+                return "Customers can only delete their own orders!";
+            }
+        }
     }
 
     $sql = "DELETE FROM orders WHERE order_id = " . $trimId;
