@@ -463,6 +463,38 @@ function makeOrder($user_id, $instructions){
     } 
 }
 
+function addToOrder($order_id, $menu_item_id){
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    } 
+
+    $trim_order_id = trim($order_id);
+    $trim_menu_item_id = trim($menu_item_id);
+
+    if($trim_order_id == "" || $trim_menu_item_id == ""){
+        return "";
+    }
+
+    $sql = "INSERT INTO orders_item (order_id, menu_item_id)
+    VALUES ('$trim_order_id', '$trim_menu_item_id')";
+
+    if ($conn->query($sql) === TRUE) {
+        $conn->close();
+        return "success";
+    } else {
+        $conn->close();
+        return "fail";
+    } 
+}
+
 
 
 ?>
