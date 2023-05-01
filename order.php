@@ -9,7 +9,7 @@
     $resp = makeOrder($_COOKIE["user_id"], $_POST['instructions']);
   }
   if(isset($_POST['submit2'])){ // update
-    $resp2 = addToOrder($_POST['order_id_add'], $_POST['menu_item_id_add']);
+    $resp2 = addToOrder($_POST['order_id_add'], $_POST['menu_item_id_add'], $_COOKIE["admin"], $_COOKIE["user_id"]);
   }
   if(isset($_POST['submit3'])){ // delete
     $resp3 = deleteOrder($_POST['order_id_delete'], $_COOKIE["admin"], $_COOKIE["user_id"]);

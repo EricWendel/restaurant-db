@@ -463,7 +463,7 @@ function makeOrder($user_id, $instructions){
     } 
 }
 
-function addToOrder($order_id, $menu_item_id){
+function addToOrder($order_id, $menu_item_id, $is_admin, $user_id){
     $servername = "localhost";
     $username = "root";
     $dbpassword = "";
@@ -481,6 +481,18 @@ function addToOrder($order_id, $menu_item_id){
 
     if($trim_order_id == "" || $trim_menu_item_id == ""){
         return "";
+    }
+
+    if($is_admin != 1){
+        $sql3 = "SELECT * FROM orders WHERE order_id = " . $trim_order_id;
+        $result = $conn->query($sql3);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            if($row["user_id"] != $user_id){
+                $conn->close();
+                return "Customers can only add to their own orders!";
+            }
+        }
     }
 
     $sql = "INSERT INTO orders_item (order_id, menu_item_id)
