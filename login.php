@@ -34,6 +34,7 @@
           $row = mysqli_fetch_assoc($result);
           $user_id = $row['user_id'];
           setcookie("user_id", $user_id, time() + 99999);
+          setcookie("admin", $row['is_admin'], time() + 99999);
       } else {
           // User doesn't exist
           echo "Invalid email";

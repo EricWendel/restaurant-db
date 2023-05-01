@@ -50,7 +50,15 @@
         <label>Price:</label>
         <input type="number" step="0.01" name="price">
       </div>
-      <button type="submit" name="submit">Submit</button>
+      <?php 
+        if($_COOKIE["admin"] == 1){
+          echo '<button type="submit" name="submit">Submit</button>';
+        }
+        else{
+          echo '<button type="submit" disabled="True" name="submit">Submit</button>';
+        }
+      ?>
+      
     </form>
     <?php
             if(@$resp != "success"){?>
@@ -110,7 +118,15 @@
         <label>New Price:</label>
         <input type="number" step="0.01" name="price_new">
       </div>
-      <button type="submit" name="submit2">Update</button>
+      <?php 
+        if($_COOKIE["admin"] == 1){
+          echo '<button type="submit" name="submit2">Update</button>';
+        }
+        else{
+          echo '<button type="submit" disabled="True" name="submit2">Update</button>';
+        }
+      ?>
+      
     </form>
     <?php
         if(@$resp2 != "success"){?>
@@ -126,7 +142,15 @@
         <label>Item Number:</label>
         <input type="number" step="1" name="item_id_delete">
       </div>
-      <button type="submit" name="submit3">Delete</button>
+      <?php 
+        if($_COOKIE["admin"] == 1){
+          echo '<button type="submit" name="submit3">Delete</button>';
+        }
+        else{
+          echo '<button type="submit" disabled="True" name="submit3">Delete</button>';
+        }
+      ?>
+      
     </form>
     <?php
         if(@$resp3 != "success"){?>
