@@ -6,7 +6,7 @@
     $logInMessage = "Logged in as: " . getLoggedInUser();
   }
   if(isset($_POST['submit'])){
-    $resp = makeUser($_POST['first_name'], $_POST['last_name'], $_POST['email'], $_POST['password'], 0);
+    $resp = makeUser($_POST['first_name'], $_POST['last_name'], $_POST['email'], $_POST['password'], $_POST['adminCheck']);
   }
   if(isset($_POST['submit2'])){
     $resp2 = updateUser($_COOKIE["user_id"], $_POST['first_new'], $_POST['last_new'], $_POST['email_new'], $_POST['password_new'], $_POST['isAdmin_new'], $_POST['firstCheck'], $_POST['lastCheck'], $_POST['emailCheck'], $_POST['passwordCheck']);
@@ -30,6 +30,9 @@
   <?php
     echo $logInMessage;
   ?>
+  <form action="index.php">
+      <button type="submit"><b>Home</b></button>
+    </form>
   <div class="content text-center">
     <h1>Make an Account</h1>
     <form action="" method="post">
@@ -48,6 +51,10 @@
       <div class="form-line">
         <label>Password:</label>
         <input type="text" name="password" value="<?php echo @$_POST['password']; ?>">
+      </div>
+      <div class="form-line">
+        <input type="checkbox" name="adminCheck">
+        <label>Admin User</label>
       </div>
       <button type="submit" name="submit">Submit</button>
 
