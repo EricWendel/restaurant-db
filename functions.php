@@ -430,4 +430,39 @@ function deleteUser($user_id){
         return "fail";
     } 
 }
+
+
+function makeOrder($user_id, $instructions){
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    } 
+
+    $trimInstr = trim($instructions);
+
+    if($trimInstr == ""){
+        return "";
+    }
+
+    $sql = "INSERT INTO orders (user_id, additional_instructions)
+    VALUES ('$user_id', '$instructions')";
+
+    if ($conn->query($sql) === TRUE) {
+        $conn->close();
+        return "success";
+    } else {
+        $conn->close();
+        return "fail";
+    } 
+}
+
+
+
 ?>

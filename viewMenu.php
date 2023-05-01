@@ -27,12 +27,12 @@
 </head>
 <body>
   <h1>Restaurant Name</h1>
-  <form action="index.php">
-      <button type="submit"><b>Home</b></button>
-    </form>
   <?php
     echo $logInMessage;
   ?>
+  <form action="index.php">
+      <button type="submit"><b>Home</b></button>
+    </form>
 
   <div class="content">
 
