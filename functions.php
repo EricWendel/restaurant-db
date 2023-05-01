@@ -115,7 +115,7 @@ function getReservations(){
         echo "<tr><th>From</th><th>To</th><th>Comments</th></tr>";
         while ($row = mysqli_fetch_assoc($result)) {
             echo "<tr> <td>" . date('F j, Y, g:i a', strtotime($row['start_time'])) . "</td> <td>" . date('F j, Y, g:i a', strtotime($row['end_time'])) . "</td> <td>" . $row['comment'] . "</td>";
-            if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'] === $row['user_id']){
+            if(isset($_COOKIE['user_id']) && ($_COOKIE['user_id'] === $row['user_id']||$_COOKIE["admin"] == 1)){
             // echo '<td><a href="deleteReservation.php?id='. $row['reservation_id'] .'">Delete</a></td>';
                 echo '
                     <form method="POST">
