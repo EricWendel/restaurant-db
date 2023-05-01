@@ -6,13 +6,29 @@
     $logInMessage = "Logged in as: " . getLoggedInUser();
   }
   if(isset($_POST['submit'])){ // create
-    $resp = makeMenuItem($_POST['item_name'], $_POST['size'], $_POST['price']);
+    if($_COOKIE["admin"] != 1){
+      $resp = "Only admin users can create menu items";
+    }
+    else{
+      $resp = makeMenuItem($_POST['item_name'], $_POST['size'], $_POST['price']);
+    }
   }
   if(isset($_POST['submit2'])){ // update
-    $resp2 = updateMenuItem($_POST['item_id_update'], $_POST['item_name_new'], $_POST['size_new'], $_POST['price_new'], $_POST['nameCheck'], $_POST['sizeCheck'], $_POST['priceCheck']);
+    if($_COOKIE["admin"] != 1){
+      $resp2 = "Only admin users can update menu items";
+    }
+    else{
+      $resp2 = updateMenuItem($_POST['item_id_update'], $_POST['item_name_new'], $_POST['size_new'], $_POST['price_new'], $_POST['nameCheck'], $_POST['sizeCheck'], $_POST['priceCheck']);
+    }
   }
   if(isset($_POST['submit3'])){ // delete
-    $resp3 = deleteMenuItem($_POST['item_id_delete']);
+    if($_COOKIE["admin"] != 1){
+      $resp3 = "Only admin users can delete menu items";
+    }
+    else{
+      $resp3 = deleteMenuItem($_POST['item_id_delete']);
+    }
+    
   }
 ?>
 <!DOCTYPE html>
@@ -50,15 +66,7 @@
         <label>Price:</label>
         <input type="number" step="0.01" name="price">
       </div>
-      <?php 
-        if($_COOKIE["admin"] == 1){
-          echo '<button type="submit" name="submit">Submit</button>';
-        }
-        else{
-          echo '<button type="submit" disabled="True" name="submit">Submit</button>';
-        }
-      ?>
-      
+      <button type="submit" name="submit">Submit</button>
     </form>
     <?php
             if(@$resp != "success"){?>
@@ -118,15 +126,7 @@
         <label>New Price:</label>
         <input type="number" step="0.01" name="price_new">
       </div>
-      <?php 
-        if($_COOKIE["admin"] == 1){
-          echo '<button type="submit" name="submit2">Update</button>';
-        }
-        else{
-          echo '<button type="submit" disabled="True" name="submit2">Update</button>';
-        }
-      ?>
-      
+      <button type="submit" name="submit2">Update</button>
     </form>
     <?php
         if(@$resp2 != "success"){?>
@@ -142,15 +142,7 @@
         <label>Item Number:</label>
         <input type="number" step="1" name="item_id_delete">
       </div>
-      <?php 
-        if($_COOKIE["admin"] == 1){
-          echo '<button type="submit" name="submit3">Delete</button>';
-        }
-        else{
-          echo '<button type="submit" disabled="True" name="submit3">Delete</button>';
-        }
-      ?>
-      
+      <button type="submit" name="submit3">Delete</button>
     </form>
     <?php
         if(@$resp3 != "success"){?>
