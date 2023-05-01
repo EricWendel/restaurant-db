@@ -11,9 +11,9 @@
   if(isset($_POST['submit2'])){ // update
     $resp2 = addToOrder($_POST['order_id_add'], $_POST['menu_item_id_add']);
   }
-  // if(isset($_POST['submit3'])){ // delete
-  //   $resp3 = deleteMenuItem($_POST['item_id_delete']);
-  // }
+  if(isset($_POST['submit3'])){ // delete
+    $resp3 = deleteOrder($_POST['order_id_delete']);
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -144,11 +144,11 @@
     ?>
         
 
-    <!-- <h1>Delete an item:</h1>
+    <h1>Delete an order:</h1>
     <form action="" method="post">
     <div class="form-line">
-        <label>Item Number:</label>
-        <input type="number" step="1" name="item_id_delete">
+        <label>Order Number:</label>
+        <input type="number" step="1" name="order_id_delete">
       </div>
       <button type="submit" name="submit3">Delete</button>
     </form>
@@ -157,7 +157,7 @@
             <p><?php echo @$resp3 ?></p>
         <?php
         }
-    ?> -->
+    ?>
   </div>
 </body>
 </html>

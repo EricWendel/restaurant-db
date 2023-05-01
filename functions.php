@@ -495,6 +495,40 @@ function addToOrder($order_id, $menu_item_id){
     } 
 }
 
+function deleteOrder($order_id){
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    } 
+
+    $trimId = trim($order_id);
+
+    if($trimId == ""){
+        return "";
+    }
+
+    $sql = "DELETE FROM orders WHERE order_id = " . $trimId;
+
+    if ($conn->query($sql) === TRUE) {
+        $sql2 = "DELETE FROM orders_item WHERE order_id = " . $trimId;
+        if ($conn->query($sql2) === TRUE) {
+            $conn->close();
+            return "success";
+        }
+        $conn->close();
+        return "fail";
+    } else {
+        $conn->close();
+        return "fail";
+    } 
+}
 
 
 ?>
