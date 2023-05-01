@@ -320,4 +320,114 @@ function deleteMenuItem($item_id){
     } 
 }
 
+function updateUser($user_id, $first_name, $last_name, $email, $password, $is_admin, $first_check, $last_check, $email_check, $pass_check){
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    } 
+
+    $trimId = trim($user_id);
+    $trimFirstName = trim($first_name);
+    $trimLastName = trim($last_name);
+    $trimEmail = trim($email);
+    $trimPassword = trim($password);
+
+
+    if($trimId == ""){
+        return "";
+    }
+    if($first_check && $trimFirstName == ""){
+        return "first name can't be empty";
+    }
+    if($last_check && $trimLastName == ""){
+        return "last name can't be empty";
+    }
+    if($email_check &&$trimEmail == ""){
+        return "email can't be empty";
+    }
+    if($pass_check &&$trimPassword == ""){
+        return "password can't be empty";
+    }
+    
+
+    if(!($first_check || $last_check || $email_check || $pass_check)){
+        return "";
+    }
+
+    $sql = "UPDATE user SET ";
+    $comma = "no";
+    if($first_check){
+        $sql .= "first_name = '$trimFirstName'";
+        $comma = "yes";
+    }
+    if($last_check){
+        if($comma == "yes"){
+            $sql .= ", ";
+        }
+        $sql .= "last_name = '$trimLastName'";
+        $comma = "yes";
+    }
+    if($email_check){
+        if($comma == "yes"){
+            $sql .= ", ";
+        }
+        $sql .= "email = '$trimEmail'";
+    }
+    if($pass_check){
+        if($comma == "yes"){
+            $sql .= ", ";
+        }
+        $sql .= "password = '$trimPassword'";
+    }
+    $sql .= " WHERE user_id = $trimId";
+    
+
+    if ($conn->query($sql) === TRUE) {
+        $conn->close();
+        return "success";
+    } else {
+        $conn->close();
+        return "fail";
+    } 
+}
+
+function deleteUser($user_id){
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    } 
+
+    $trimId = trim($user_id);
+
+    if($trimId == ""){
+        return "";
+    }
+
+    $sql = "DELETE FROM user WHERE user_id = " . $trimId;
+
+    if ($conn->query($sql) === TRUE) {
+        $conn->close();
+        if (isset($_COOKIE['user_id'])) {
+            unset($_COOKIE['user_id']); 
+        }
+        return "success";
+    } else {
+        $conn->close();
+        return "fail";
+    } 
+}
 ?>
