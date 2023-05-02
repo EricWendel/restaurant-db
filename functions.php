@@ -34,6 +34,37 @@ function makeUser($first_name, $last_name, $email, $password, $is_admin){
     } 
 }
 
+function getUser($user_id){
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    } 
+
+    $sql = "SELECT * FROM user WHERE user_id = ".$user_id;
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $conn->close();
+        if($row["is_admin"]){
+            return $row["first_name"] . " " . $row["last_name"];
+        }
+        else{
+            return $row["first_name"] . " " . $row["last_name"];
+        }
+        
+    } else {
+        $conn->close();
+        return "";
+    } 
+}
+
 function getLoggedInUser(){
     $servername = "localhost";
     $username = "root";
@@ -105,9 +136,9 @@ function getReservations(){
 
     // Generate an HTML table
         echo "<table>";
-        echo "<tr><th>From</th><th>To</th><th>Comments</th></tr>";
+        echo "<tr><th>Name</th><th>From</th><th>To</th><th>Comments</th></tr>";
         while ($row = mysqli_fetch_assoc($result)) {
-            echo "<tr> <td>" . date('F j, Y, g:i a', strtotime($row['start_time'])) . "</td> <td>" . date('F j, Y, g:i a', strtotime($row['end_time'])) . "</td> <td>" . $row['comment'] . "</td>";
+            echo "<tr> <td>".getUser($row['user_id'])."</td><td>" . date('F j, Y, g:i a', strtotime($row['start_time'])) . "</td> <td>" . date('F j, Y, g:i a', strtotime($row['end_time'])) . "</td> <td>" . $row['comment'] . "</td>";
             if(isset($_COOKIE['user_id']) && ($_COOKIE['user_id'] === $row['user_id']||$_COOKIE["admin"] == 1)){
             // echo '<td><a href="deleteReservation.php?id='. $row['reservation_id'] .'">Delete</a></td>';
                 echo '
