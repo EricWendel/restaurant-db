@@ -24,14 +24,11 @@ function makeUser($first_name, $last_name, $email, $password, $is_admin){
     VALUES ('$first_name', '$last_name', '$email', '$password', $sqlAdmin)";
 
     if ($conn->query($sql) === TRUE) {
-        //echo "New record created successfully";
         $user_id = $conn->insert_id;
-        echo $user_id;
         setcookie("user_id", $user_id, time() + 99999);
         $conn->close();
         return "success";
     } else {
-        //echo "Error: " . $sql . "<br>" . $conn->error;
         $conn->close();
         return "fail";
     } 
@@ -53,7 +50,6 @@ function getLoggedInUser(){
     $sql = "SELECT * FROM user WHERE user_id = ".$_COOKIE["user_id"];
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
-        //echo "New record created successfully";
         $row = $result->fetch_assoc();
         $conn->close();
         if($row["is_admin"]){
@@ -64,7 +60,6 @@ function getLoggedInUser(){
         }
         
     } else {
-        //echo "Error: " . $sql . "<br>" . $conn->error;
         $conn->close();
         return "You are not logged in";
     } 
@@ -88,9 +83,7 @@ function createReservation($start_time, $end_time, $comment){
     // Insert data into database
     $sql = "INSERT INTO reservation (user_id, start_time, end_time, comment) VALUES ('$user_id', '$start_time', '$end_time', '$comment')";
     if (mysqli_query($conn, $sql)) {
-        echo "Reservation added successfully";
     } else {
-        echo "Error adding record: " . mysqli_error($conn);
     }
     $conn->close();
 }

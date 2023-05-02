@@ -8,7 +8,6 @@
     if (isset($_POST['submit']) && isset($_COOKIE['user_id'])) {
         
       $reservation_id = $_GET['id'];
-      echo $reservation_id;
       $start_time = $_POST['start_time'];
       $end_time = $_POST['end_time'];
       $comment = $_POST['comment'];
@@ -17,7 +16,7 @@
       exit();
     } 
     else {
-      echo "Create Reservation Failed!";
+
     }
 ?>
 

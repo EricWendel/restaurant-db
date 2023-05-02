@@ -13,7 +13,7 @@
     createReservation($start_time, $end_time, $comment);
   } 
   else {
-    echo "Create Reservation Failed!";
+    
   }
 
 ?>
