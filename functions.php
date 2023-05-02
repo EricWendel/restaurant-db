@@ -6,6 +6,13 @@ function makeUser($first_name, $last_name, $email, $password, $is_admin){
     $dbpassword = "";
     $dbname = "restaurantV2";
 
+    $sqlAdmin = 0;
+    setcookie("admin", 0, time() + 99999);
+    if($is_admin){
+        $sqlAdmin = 1;
+        setcookie("admin", 1, time() + 99999);
+    }
+
     // Create connection
     $conn = new mysqli($servername, $username, $dbpassword, $dbname);
     // Check connection
@@ -14,7 +21,7 @@ function makeUser($first_name, $last_name, $email, $password, $is_admin){
     } 
 
     $sql = "INSERT INTO user (first_name, last_name, email, password, is_admin)
-    VALUES ('$first_name', '$last_name', '$email', '$password', 0)";
+    VALUES ('$first_name', '$last_name', '$email', '$password', $sqlAdmin)";
 
     if ($conn->query($sql) === TRUE) {
         //echo "New record created successfully";
@@ -49,7 +56,13 @@ function getLoggedInUser(){
         //echo "New record created successfully";
         $row = $result->fetch_assoc();
         $conn->close();
-        return $row["first_name"] . " " . $row["last_name"];
+        if($row["is_admin"]){
+            return $row["first_name"] . " " . $row["last_name"] . ", Admin user" ;
+        }
+        else{
+            return $row["first_name"] . " " . $row["last_name"] . ", Customer user" ;
+        }
+        
     } else {
         //echo "Error: " . $sql . "<br>" . $conn->error;
         $conn->close();
@@ -102,7 +115,7 @@ function getReservations(){
         echo "<tr><th>From</th><th>To</th><th>Comments</th></tr>";
         while ($row = mysqli_fetch_assoc($result)) {
             echo "<tr> <td>" . date('F j, Y, g:i a', strtotime($row['start_time'])) . "</td> <td>" . date('F j, Y, g:i a', strtotime($row['end_time'])) . "</td> <td>" . $row['comment'] . "</td>";
-            if(isset($_COOKIE['user_id']) && $_COOKIE['user_id'] === $row['user_id']){
+            if(isset($_COOKIE['user_id']) && ($_COOKIE['user_id'] === $row['user_id']||$_COOKIE["admin"] == 1)){
             // echo '<td><a href="deleteReservation.php?id='. $row['reservation_id'] .'">Delete</a></td>';
                 echo '
                     <form method="POST">
@@ -310,5 +323,240 @@ function deleteMenuItem($item_id){
         return "fail";
     } 
 }
+
+function updateUser($user_id, $first_name, $last_name, $email, $password, $is_admin, $first_check, $last_check, $email_check, $pass_check){
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    } 
+
+    $trimId = trim($user_id);
+    $trimFirstName = trim($first_name);
+    $trimLastName = trim($last_name);
+    $trimEmail = trim($email);
+    $trimPassword = trim($password);
+
+
+    if($trimId == ""){
+        return "";
+    }
+    if($first_check && $trimFirstName == ""){
+        return "first name can't be empty";
+    }
+    if($last_check && $trimLastName == ""){
+        return "last name can't be empty";
+    }
+    if($email_check &&$trimEmail == ""){
+        return "email can't be empty";
+    }
+    if($pass_check &&$trimPassword == ""){
+        return "password can't be empty";
+    }
+    
+
+    if(!($first_check || $last_check || $email_check || $pass_check)){
+        return "";
+    }
+
+    $sql = "UPDATE user SET ";
+    $comma = "no";
+    if($first_check){
+        $sql .= "first_name = '$trimFirstName'";
+        $comma = "yes";
+    }
+    if($last_check){
+        if($comma == "yes"){
+            $sql .= ", ";
+        }
+        $sql .= "last_name = '$trimLastName'";
+        $comma = "yes";
+    }
+    if($email_check){
+        if($comma == "yes"){
+            $sql .= ", ";
+        }
+        $sql .= "email = '$trimEmail'";
+    }
+    if($pass_check){
+        if($comma == "yes"){
+            $sql .= ", ";
+        }
+        $sql .= "password = '$trimPassword'";
+    }
+    $sql .= " WHERE user_id = $trimId";
+    
+
+    if ($conn->query($sql) === TRUE) {
+        $conn->close();
+        return "success";
+    } else {
+        $conn->close();
+        return "fail";
+    } 
+}
+
+function deleteUser($user_id){
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    } 
+
+    $trimId = trim($user_id);
+
+    if($trimId == ""){
+        return "";
+    }
+
+    $sql = "DELETE FROM user WHERE user_id = " . $trimId;
+
+    if ($conn->query($sql) === TRUE) {
+        $conn->close();
+        if (isset($_COOKIE['user_id'])) {
+            unset($_COOKIE['user_id']); 
+        }
+        return "success";
+    } else {
+        $conn->close();
+        return "fail";
+    } 
+}
+
+
+function makeOrder($user_id, $instructions){
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    } 
+
+    $trimInstr = trim($instructions);
+
+    if($trimInstr == ""){
+        return "";
+    }
+
+    $sql = "INSERT INTO orders (user_id, additional_instructions)
+    VALUES ('$user_id', '$instructions')";
+
+    if ($conn->query($sql) === TRUE) {
+        $conn->close();
+        return "success";
+    } else {
+        $conn->close();
+        return "fail";
+    } 
+}
+
+function addToOrder($order_id, $menu_item_id, $is_admin, $user_id){
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    } 
+
+    $trim_order_id = trim($order_id);
+    $trim_menu_item_id = trim($menu_item_id);
+
+    if($trim_order_id == "" || $trim_menu_item_id == ""){
+        return "";
+    }
+
+    if($is_admin != 1){
+        $sql3 = "SELECT * FROM orders WHERE order_id = " . $trim_order_id;
+        $result = $conn->query($sql3);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            if($row["user_id"] != $user_id){
+                $conn->close();
+                return "Customers can only add to their own orders!";
+            }
+        }
+    }
+
+    $sql = "INSERT INTO orders_item (order_id, menu_item_id)
+    VALUES ('$trim_order_id', '$trim_menu_item_id')";
+
+    if ($conn->query($sql) === TRUE) {
+        $conn->close();
+        return "success";
+    } else {
+        $conn->close();
+        return "fail";
+    } 
+}
+
+function deleteOrder($order_id, $is_admin, $user_id){
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    } 
+
+    $trimId = trim($order_id);
+
+    if($trimId == ""){
+        return "";
+    }
+
+    if($is_admin != 1){
+        $sql3 = "SELECT * FROM orders WHERE order_id = " . $trimId;
+        $result = $conn->query($sql3);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            if($row["user_id"] != $user_id){
+                $conn->close();
+                return "Customers can only delete their own orders!";
+            }
+        }
+    }
+
+    $sql = "DELETE FROM orders WHERE order_id = " . $trimId;
+
+    if ($conn->query($sql) === TRUE) {
+        $sql2 = "DELETE FROM orders_item WHERE order_id = " . $trimId;
+        if ($conn->query($sql2) === TRUE) {
+            $conn->close();
+            return "success";
+        }
+        $conn->close();
+        return "fail";
+    } else {
+        $conn->close();
+        return "fail";
+    } 
+}
+
 
 ?>

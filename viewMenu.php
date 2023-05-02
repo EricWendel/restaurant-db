@@ -6,13 +6,29 @@
     $logInMessage = "Logged in as: " . getLoggedInUser();
   }
   if(isset($_POST['submit'])){ // create
-    $resp = makeMenuItem($_POST['item_name'], $_POST['size'], $_POST['price']);
+    if($_COOKIE["admin"] != 1){
+      $resp = "Only admin users can create menu items";
+    }
+    else{
+      $resp = makeMenuItem($_POST['item_name'], $_POST['size'], $_POST['price']);
+    }
   }
   if(isset($_POST['submit2'])){ // update
-    $resp2 = updateMenuItem($_POST['item_id_update'], $_POST['item_name_new'], $_POST['size_new'], $_POST['price_new'], $_POST['nameCheck'], $_POST['sizeCheck'], $_POST['priceCheck']);
+    if($_COOKIE["admin"] != 1){
+      $resp2 = "Only admin users can update menu items";
+    }
+    else{
+      $resp2 = updateMenuItem($_POST['item_id_update'], $_POST['item_name_new'], $_POST['size_new'], $_POST['price_new'], $_POST['nameCheck'], $_POST['sizeCheck'], $_POST['priceCheck']);
+    }
   }
   if(isset($_POST['submit3'])){ // delete
-    $resp3 = deleteMenuItem($_POST['item_id_delete']);
+    if($_COOKIE["admin"] != 1){
+      $resp3 = "Only admin users can delete menu items";
+    }
+    else{
+      $resp3 = deleteMenuItem($_POST['item_id_delete']);
+    }
+    
   }
 ?>
 <!DOCTYPE html>
@@ -27,12 +43,12 @@
 </head>
 <body>
   <h1>Restaurant Name</h1>
-  <form action="index.php">
-      <button type="submit"><b>Home</b></button>
-    </form>
   <?php
     echo $logInMessage;
   ?>
+  <form action="index.php">
+      <button type="submit"><b>Home</b></button>
+    </form>
 
   <div class="content">
 

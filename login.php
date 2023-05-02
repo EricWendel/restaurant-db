@@ -1,4 +1,10 @@
 <?php
+  require "functions.php";
+  if(!isset($_COOKIE["user_id"])) {
+    $logInMessage = "You are not logged in";
+  } else {
+    $logInMessage = "Logged in as: " . getLoggedInUser();
+  }
   $servername = "localhost";
   $username = "root";
   $password = "";
@@ -28,6 +34,7 @@
           $row = mysqli_fetch_assoc($result);
           $user_id = $row['user_id'];
           setcookie("user_id", $user_id, time() + 99999);
+          setcookie("admin", $row['is_admin'], time() + 99999);
       } else {
           // User doesn't exist
           echo "Invalid email";
@@ -47,7 +54,12 @@
 </head>
 <body>
   <h1>Restaurant Name</h1>
-  
+  <?php
+    echo $logInMessage;
+  ?>
+  <form action="index.php">
+    <button type="submit"><b>Home</b></button>
+  </form>
   <div class="content text-center">
     <h1>Login</h1>
     <form method="POST">
