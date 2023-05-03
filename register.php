@@ -33,6 +33,10 @@
   <form action="index.php">
       <button type="submit"><b>Home</b></button>
     </form>
+  <form action="logout.php">
+    <button type="submit"><b>Log Out</b></button>
+  </form>
+
   <div class="content text-center">
     <h1>Make an Account</h1>
     <form action="" method="post">
@@ -50,7 +54,7 @@
       </div>
       <div class="form-line">
         <label>Password:</label>
-        <input type="text" name="password" value="<?php echo @$_POST['password']; ?>">
+        <input type="password" name="password" value="<?php echo @$_POST['password']; ?>">
       </div>
       <div class="form-line">
         <input type="checkbox" name="adminCheck">
@@ -90,7 +94,7 @@
       <div class="form-line">
         <input type="checkbox" name="passwordCheck">
         <label>New password:</label>
-        <input type="text" name="password_new">
+        <input type="password" name="password_new">
       </div>
       <div class="form-line">
         <input type="checkbox" name="isAdmin_new">
