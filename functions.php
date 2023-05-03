@@ -581,6 +581,7 @@ function deleteOrder($order_id, $is_admin, $user_id){
 }
 
 function createReview($user_id, $date_posted_day, $date_posted_month, $date_posted_year, $star_rating, $subject_contents, $main_contents) {
+    // Define connection details for the database
     $servername = "localhost";
     $username = "root";
     $dbpassword = "";
@@ -590,9 +591,11 @@ function createReview($user_id, $date_posted_day, $date_posted_month, $date_post
     $conn = new mysqli($servername, $username, $dbpassword, $dbname);
     // Check connection
     if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+        // If the connection failed, output an error message and stop executing the script
+        die("Connection failed: " . $conn->connect_error);
     } 
 
+    // Trim the input data to remove whitespace
     $trimId = trim($user_id);
     $trimDatePostedDay = trim($date_posted_day);
     $trimDatePostedMonth = trim($date_posted_month);
@@ -601,6 +604,7 @@ function createReview($user_id, $date_posted_day, $date_posted_month, $date_post
     $trimSubjectContents = trim($subject_contents);
     $trimMainContents = trim($main_contents);
 
+    // Check if any required fields are empty
     if($trimId == ""){
         return "";
     }
@@ -627,11 +631,15 @@ function createReview($user_id, $date_posted_day, $date_posted_month, $date_post
     $sql = "INSERT INTO review (main_contents, star_rating, date_posted_day, date_posted_month, date_posted_year, subject_contents, user_id) 
     VALUES ('$trimMainContents', '$trimStarRating', '$trimDatePostedDay', '$trimDatePostedMonth', '$trimDatePostedYear', '$trimSubjectContents', '$trimId')";
     
+    // Execute the SQL query and check if it was successful
     if (mysqli_query($conn, $sql)) {
+        // If the query was successful, output a success message
         echo "Review added successfully!\n";
     } else {
+        // If the query failed, output an error message
         echo "Error adding record: " . mysqli_error($conn);
     }
+    // Close the database connection
     $conn->close();
 }
 
