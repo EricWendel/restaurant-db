@@ -580,5 +580,145 @@ function deleteOrder($order_id, $is_admin, $user_id){
     } 
 }
 
+function createReview($user_id, $date_posted_day, $date_posted_month, $date_posted_year, $star_rating, $subject_contents, $main_contents) {
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+
+    // Create connection
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+    // Check connection
+    if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    } 
+
+    $trimId = trim($user_id);
+    $trimDatePostedDay = trim($date_posted_day);
+    $trimDatePostedMonth = trim($date_posted_month);
+    $trimDatePostedYear = trim($date_posted_year);
+    $trimStarRating = trim($star_rating);
+    $trimSubjectContents = trim($subject_contents);
+    $trimMainContents = trim($main_contents);
+
+    if($trimId == ""){
+        return "";
+    }
+    if($trimDatePostedDay == ""){
+        return "Day can't be empty";
+    }
+    if($trimDatePostedMonth == ""){
+        return "Month can't be empty";
+    }
+    if($trimDatePostedYear == ""){
+        return "Year can't be empty";
+    }
+    if($trimStarRating == ""){
+        return "You must give a star rating";
+    }
+    if($trimSubjectContents == ""){
+        return "There must be a subject";
+    }
+    if($trimMainContents == ""){
+        return "There must be a review";
+    }
+
+    // Insert data into database
+    $sql = "INSERT INTO review (main_contents, star_rating, date_posted_day, date_posted_month, date_posted_year, subject_contents, user_id) 
+    VALUES ('$trimMainContents', '$trimStarRating', '$trimDatePostedDay', '$trimDatePostedMonth', '$trimDatePostedYear', '$trimSubjectContents', '$trimId')";
+    
+    if (mysqli_query($conn, $sql)) {
+        echo "Review added successfully!\n";
+    } else {
+        echo "Error adding record: " . mysqli_error($conn);
+    }
+    $conn->close();
+}
+
+function deleteReview($review_id){
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+
+    // Retrieve user's data
+    $user_id = $_COOKIE["user_id"];
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+    $sql = "SELECT is_admin FROM user WHERE user_id = ".$user_id;
+    $result = $conn->query($sql);
+    $row = $result->fetch_assoc();
+
+    // Check if user is admin
+    if($row["is_admin"] == 1 || $row["user_id"] == $user_id){
+        // User is admin, proceed with review deletion
+        //if user is deleting their own review, proceed with deletion
+        // Create connection
+        $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        } 
+        $sql = "DELETE FROM review WHERE review_id = " . $review_id;
+        if ($conn->query($sql) === TRUE) {
+            $conn->close();
+            return "Review deleted!\n";
+        } else {
+            $conn->close();
+            return "fail\n";
+        } 
+        
+    } else {
+        // User is not admin, return error message
+        return "You are not authorized to delete other's reviews because you are not an admin.\n";
+    }
+}
+
+function updateReview($review_id, $star_rating, $subject_contents, $main_contents) {
+    $servername = "localhost";
+    $username = "root";
+    $dbpassword = "";
+    $dbname = "restaurantV2";
+
+
+    // Retrieve user's data
+    $user_id = $_COOKIE["user_id"];
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+    $sql = "SELECT is_admin FROM user WHERE user_id = ".$user_id;
+    // $result = $conn->query($sql);
+    // $row = $result->fetch_assoc();
+
+
+    // Check if user is admin or if review belongs to the user
+    if($row["is_admin"] == 1 || $row["user_id"] == $user_id){
+        // User is admin or review belongs to user, proceed with review update
+        $trimStarRating = trim($star_rating);
+        $trimSubjectContents = trim($subject_contents);
+        $trimMainContents = trim($main_contents);
+
+        if($trimStarRating == ""){
+            return "You must give a star rating";
+        }
+        if($trimSubjectContents == ""){
+            return "There must be a subject";
+        }
+        if($trimMainContents == ""){
+            return "There must be a review";
+        }
+
+        // Update data in database
+        $sql = "UPDATE review SET main_contents='".$trimMainContents."', star_rating='".$trimStarRating."', subject_contents='".$trimSubjectContents."' WHERE review_id = ".$review_id;
+        
+        if (mysqli_query($conn, $sql)) {
+            $conn->close();
+            return "\nReview Updated\n";
+        } else {
+            $conn->close();
+            return "\nfail\n";
+        }
+    } else {
+        $conn->close();
+        return "You are not authorized to update this review\n";
+    }
+}
 
 ?>
