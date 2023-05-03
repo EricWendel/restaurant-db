@@ -1,10 +1,13 @@
 <?php
+// Include the "functions.php" file, which contains functions for interacting with the database.
   require "functions.php";
+  // Check if the user is logged in or not using a cookie named "user_id".
   if(!isset($_COOKIE["user_id"])) {
     $logInMessage = "You are not logged in";
   } else {
     $logInMessage = "Logged in as: " . getLoggedInUser();
   }
+  // If the user submits a new review using the "createReview" form, add the review to the database using the "createReview" function.
   if (isset($_POST['createReview']) && isset($_COOKIE['user_id'])) {
     $user_id = $_COOKIE['user_id'];
     $date_posted_day = $_POST['date_posted_day'];
@@ -17,16 +20,20 @@
     //echo $result;
   }
   else{
+    // If the user is not logged in and tries to submit a new review, display a message asking them to log in.
     $result = "You must be logged in to create a review";
   }
 
+  // If the admin submits the "deleteReview" form, delete the specified review using the "deleteReview" function.
   if(isset($_POST['deleteReview'])){ // delete
     $resp3 = deleteReview($_POST['review_id']);
   }
   else{
+    // If a non-admin user tries to delete a review, display a message telling them that only admins can do this.
     $resp3 = "Only admins can delete reviews!";
   }
 
+  // If the user submits the "updateReview" form, update the specified review using the "updateReview" function.
   if (isset($_POST['updateReview'])) {
     $review_id = $_POST['review_id'];
     $star_rating = $_POST['rating'];
@@ -36,6 +43,7 @@
     echo $resp4;
   }
   else{
+    // If a non-admin user tries to update someone else's review, display a message telling them that only admins can do this.
     $resp4 = "Only admins can update anyone's review, but you can update your own review!";
   }
 ?>
@@ -52,11 +60,14 @@
 <body>
   <h1>Restaurant Name</h1>
   <?php
+    // Display the login status message.
     echo $logInMessage;
   ?>
+  <!-- Add a button to go back to the homepage. -->
   <form action="index.php">
     <button type="submit"><b>Home</b></button>
   </form>
+    <!-- Add a form for users to submit a new review. -->
   <div class="content text-center">
     <h1>Reviews</h1>
 
@@ -99,10 +110,12 @@
         </div>
       </form>
       <?php
+      // Display the result of the form submission, whether successful or not.
       echo $result;
       ?>
     </div>
 
+    <!-- Display a table of all reviews in the database. -->
     <div style="margin-top: 50px;">
       <h2 style="text-align: center;">Anonymous Reviews</h2>
       <table style="border: 1px solid black; border-collapse: collapse; width: 100%; padding: 10px;">
@@ -113,6 +126,7 @@
           <th style="border: 1px solid black; padding: 10px;">Rating</th>
     </tr>
     <?php
+      // Connect to the database and retrieve all reviews.
       $servername = "localhost";
       $username = "root";
       $password = "";
@@ -146,6 +160,7 @@
   </table>
 </div>
 
+<!-- Allow administrators to delete a review. -->
 <div style="margin-top: 50px;">
   <h2 style="text-align: center;">Delete a Review</h2>
   <form method="POST">
@@ -158,10 +173,12 @@
     </div>
   </form>
   <?php
+  // Display the result of the delete operation, whether successful or not.
   echo $resp3;
   ?>
 </div>
 
+<!-- Allow administrators or users to update a review. -->
 <div style="margin-top: 50px;">
   <h2 style="text-align: center;">Update a Review</h2>
   <form method="POST">
@@ -194,6 +211,7 @@
     </div>
   </form>
   <?php
+    // Display the result of the update operation, whether
     echo $resp4;
   ?>
 </div>
