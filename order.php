@@ -65,7 +65,13 @@
         die("Connection failed: " . $conn->connect_error);
         } 
 
-        $sql = "SELECT * FROM orders";
+        if($_COOKIE["admin"]){
+          $sql = "SELECT * FROM orders";
+        }
+        else{
+          $sql = "SELECT * FROM orders WHERE user_id =" . $_COOKIE["user_id"];
+        }
+        
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {

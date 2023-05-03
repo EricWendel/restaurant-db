@@ -652,10 +652,9 @@ function deleteReview($review_id){
     // Retrieve user's data
     $user_id = $_COOKIE["user_id"];
     $conn = new mysqli($servername, $username, $dbpassword, $dbname);
-    $sql = "SELECT is_admin FROM user WHERE user_id = ".$user_id;
+    $sql = "SELECT * FROM user WHERE user_id = ".$user_id;
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
-
     // Check if user is admin
     if($row["is_admin"] == 1 || $row["user_id"] == $user_id){
         // User is admin, proceed with review deletion
@@ -692,8 +691,8 @@ function updateReview($review_id, $star_rating, $subject_contents, $main_content
     $user_id = $_COOKIE["user_id"];
     $conn = new mysqli($servername, $username, $dbpassword, $dbname);
     $sql = "SELECT is_admin FROM user WHERE user_id = ".$user_id;
-    // $result = $conn->query($sql);
-    // $row = $result->fetch_assoc();
+    $result = $conn->query($sql);
+    $row = $result->fetch_assoc();
 
 
     // Check if user is admin or if review belongs to the user
