@@ -7,6 +7,8 @@
     
     This file was contributed to by all team members.
  */
+
+ // // Implemented by Varun Somarouthu as functionality set 1
 function makeUser($first_name, $last_name, $email, $password, $is_admin){
     $servername = "localhost";
     $username = "root";
@@ -41,6 +43,7 @@ function makeUser($first_name, $last_name, $email, $password, $is_admin){
     } 
 }
 
+// Implemented by Varun Somarouthu as functionality set 1
 function getUser($user_id){
     $servername = "localhost";
     $username = "root";
@@ -72,6 +75,7 @@ function getUser($user_id){
     } 
 }
 
+// Implemented by Varun Somarouthu as functionality set 1
 function getLoggedInUser(){
     $servername = "localhost";
     $username = "root";
@@ -369,6 +373,7 @@ function deleteMenuItem($item_id){
     } 
 }
 
+// Implemented by Varun Somarouthu as functionality set 1
 function updateUser($user_id, $first_name, $last_name, $email, $password, $is_admin, $first_check, $last_check, $email_check, $pass_check){
     $servername = "localhost";
     $username = "root";
@@ -447,6 +452,7 @@ function updateUser($user_id, $first_name, $last_name, $email, $password, $is_ad
     } 
 }
 
+// Implemented by Varun Somarouthu as functionality set 1
 function deleteUser($user_id){
     $servername = "localhost";
     $username = "root";
