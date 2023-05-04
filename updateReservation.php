@@ -1,4 +1,9 @@
 <?php
+  /* 
+    This page allows users to input information for updating reservations.
+    This page is a part of functionality set 2.
+    This page was implemented by Ethan Huynh.
+  */
     require "functions.php";
     if(!isset($_COOKIE["user_id"])) {
       $logInMessage = "You are not logged in";
@@ -6,7 +11,7 @@
       $logInMessage = "Logged in as: " . getLoggedInUser();
     }
     if (isset($_POST['submit']) && isset($_COOKIE['user_id'])) {
-        
+      // Update the reservation with the inputted information and return to the reservation page
       $reservation_id = $_GET['id'];
       $start_time = $_POST['start_time'];
       $end_time = $_POST['end_time'];
@@ -15,9 +20,6 @@
       header('Location: reservation.php');
       exit();
     } 
-    else {
-
-    }
 ?>
 
 <!DOCTYPE html>
@@ -36,22 +38,27 @@
     <h1>Update Reservation</h1>
     <form method="POST">
       <div>
+        <!-- Datetime selection for the new start time -->
         <label for="start_time">Reservation start date & time:</label>
         <input type="datetime-local" id="start_time" name="start_time">
       </div>
       <div>
+        <!-- Datetime selection for the new end time -->
         <label for="end_time">Reservation end date & time:</label>
         <input type="datetime-local" id="end_time" name="end_time">
       </div>
       <div>
+        <!-- Textarea for new comments or special requests -->
         <label for="comment">Additional Comments:</label>
         <textarea id="comment" name="comment" rows="5" cols="30"></textarea>
       </div>
       <div>
+        <!-- Submit button for updating the reservation -->
         <input type="submit" name="submit" value="Submit">   
         
       </div>
       <div>
+        <!-- Cancel and go back to the reservation page -->
         <a href="reservation.php" class="btn btn-secondary ml-2">Cancel</a>
       </div>
     </form>

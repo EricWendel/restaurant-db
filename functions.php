@@ -106,8 +106,9 @@ function getLoggedInUser(){
         return "You are not logged in";
     } 
 }
-
+// Implemented by Ethan Huynh as part of functionality set 2
 function createReservation($start_time, $end_time, $comment){
+    // Database connection info
     $user_id = $_COOKIE["user_id"];
     $servername = "localhost";
     $username = "root";
@@ -124,15 +125,15 @@ function createReservation($start_time, $end_time, $comment){
 
     // Insert data into database
     $sql = "INSERT INTO reservation (user_id, start_time, end_time, comment) VALUES ('$user_id', '$start_time', '$end_time', '$comment')";
-    if (mysqli_query($conn, $sql)) {
-    } else {
-    }
+
+    // Close the database connection
     $conn->close();
 }
 
+// Implemented by Ethan Huynh as part of functionality set 2
 function getReservations(){
     $query = "SELECT * FROM reservation";
-    // Create connection
+    // Database connection info
     $servername = "localhost";
     $username = "root";
     $dbpassword = "";
@@ -151,7 +152,6 @@ function getReservations(){
         while ($row = mysqli_fetch_assoc($result)) {
             echo "<tr> <td>".getUser($row['user_id'])."</td><td>" . date('F j, Y, g:i a', strtotime($row['start_time'])) . "</td> <td>" . date('F j, Y, g:i a', strtotime($row['end_time'])) . "</td> <td>" . $row['comment'] . "</td>";
             if(isset($_COOKIE['user_id']) && ($_COOKIE['user_id'] === $row['user_id']||$_COOKIE["admin"] == 1)){
-            // echo '<td><a href="deleteReservation.php?id='. $row['reservation_id'] .'">Delete</a></td>';
                 echo '
                     <form method="POST">
                         <td>
@@ -172,7 +172,9 @@ function getReservations(){
     mysqli_close($conn);
 }
 
+// Implemented by Ethan Huynh as part of functionality set 2
 function updateReservation($reservation_id, $start_time, $end_time, $comment){
+    // Database connection info
     $servername = "localhost";
     $username = "root";
     $dbpassword = "";
@@ -185,6 +187,7 @@ function updateReservation($reservation_id, $start_time, $end_time, $comment){
         die("Connection failed: " . $conn->connect_error);
     } 
 
+    // Update reservation with new data
     $sql = "UPDATE reservation SET start_time='".$start_time."', end_time='".$end_time."', comment='".$comment."' WHERE reservation_id = $reservation_id";
 
     if ($conn->query($sql) === TRUE) {
@@ -192,10 +195,13 @@ function updateReservation($reservation_id, $start_time, $end_time, $comment){
     } else {
         return "fail";
     } 
+    // Close the database connection
     $conn->close();
 }
 
+// Implemented by Ethan Huynh as part of functionality set 2
 function deleteReservation($reservation_id){
+    // Database connection info
     $servername = "localhost";
     $username = "root";
     $dbpassword = "";
@@ -208,6 +214,7 @@ function deleteReservation($reservation_id){
         die("Connection failed: " . $conn->connect_error);
     } 
 
+    // Delete the selected reservation
     $sql = "DELETE FROM reservation WHERE reservation_id = " . $reservation_id;
 
     if ($conn->query($sql) === TRUE) {
@@ -215,6 +222,7 @@ function deleteReservation($reservation_id){
     } else {
         return "fail";
     } 
+    // Close the database connection
     $conn->close();
 }
 
