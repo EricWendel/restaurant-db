@@ -1,5 +1,12 @@
 <?php
-
+/* 
+    functions.php is used to define all functions that create, update
+    or delete from the database. There are also funcitons to handle login.
+    functions.php is imported in each php page file so that the information in
+    each form can be used as parameters in the function calls.
+    
+    This file was contributed to by all team members.
+ */
 function makeUser($first_name, $last_name, $email, $password, $is_admin){
     $servername = "localhost";
     $username = "root";
@@ -207,7 +214,9 @@ function deleteReservation($reservation_id){
     $conn->close();
 }
 
+// Implemented by Eric Wendel as part of functionality set 3
 function makeMenuItem($item_name, $size, $price){
+    // Database connection info
     $servername = "localhost";
     $username = "root";
     $dbpassword = "";
@@ -220,10 +229,12 @@ function makeMenuItem($item_name, $size, $price){
     die("Connection failed: " . $conn->connect_error);
     } 
 
+    // trim whitespace from input
     $trimName = trim($item_name);
     $trimSize = trim($size);
     $trimPrice = trim($price);
 
+    // check for invalid empty inputs
     if($trimName == "" && $trimSize == "" && $trimPrice == ""){
         return ""; // don't display messgae if they aren't trying to make an item
     }
@@ -237,9 +248,11 @@ function makeMenuItem($item_name, $size, $price){
         return "price can't be empty";
     }
 
+    // form the SQL statement
     $sql = "INSERT INTO menu_item (name, size, price)
     VALUES ('$trimName', '$trimSize', '$trimPrice')";
 
+    // execute the SQL statement
     if ($conn->query($sql) === TRUE) {
         $conn->close();
         return "success";
@@ -249,7 +262,9 @@ function makeMenuItem($item_name, $size, $price){
     } 
 }
 
+// Implemented by Eric Wendel as part of functionality set 3
 function updateMenuItem($item_id, $item_name, $size, $price, $nameCheck, $sizeCheck, $priceCheck){
+    // Database  connection info
     $servername = "localhost";
     $username = "root";
     $dbpassword = "";
@@ -262,12 +277,14 @@ function updateMenuItem($item_id, $item_name, $size, $price, $nameCheck, $sizeCh
     die("Connection failed: " . $conn->connect_error);
     } 
 
+    // trim whitespace on the form inputs
     $trimId = trim($item_id);
     $trimName = trim($item_name);
     $trimSize = trim($size);
     $trimPrice = trim($price);
 
 
+    // Check for invalid empty inputs
     if($trimId == ""){
         return "";
     }
@@ -285,6 +302,7 @@ function updateMenuItem($item_id, $item_name, $size, $price, $nameCheck, $sizeCh
         return "";
     }
 
+    // Dynamically form the SQL statement based on input with correct comma placement
     $sql = "UPDATE menu_item SET ";
     $comma = "no";
     if($nameCheck){
@@ -306,7 +324,7 @@ function updateMenuItem($item_id, $item_name, $size, $price, $nameCheck, $sizeCh
     }
     $sql .= " WHERE menu_item_id = $trimId";
     
-
+    // execute the query
     if ($conn->query($sql) === TRUE) {
         $conn->close();
         return "success";
@@ -316,7 +334,9 @@ function updateMenuItem($item_id, $item_name, $size, $price, $nameCheck, $sizeCh
     } 
 }
 
+// Implemented by Eric Wendel as part of functionality set 3
 function deleteMenuItem($item_id){
+    // database connection info
     $servername = "localhost";
     $username = "root";
     $dbpassword = "";
@@ -329,14 +349,17 @@ function deleteMenuItem($item_id){
     die("Connection failed: " . $conn->connect_error);
     } 
 
+    // trim whitespace from inputs
     $trimId = trim($item_id);
 
+    // check for empty input
     if($trimId == ""){
         return "";
     }
 
+    // Form SQL statement
     $sql = "DELETE FROM menu_item WHERE menu_item_id = " . $trimId;
-
+    // Execute SQL statement
     if ($conn->query($sql) === TRUE) {
         $conn->close();
         return "success";
@@ -457,7 +480,7 @@ function deleteUser($user_id){
     } 
 }
 
-
+// Implemented by Eric Wendel as part of functionality set 3
 function makeOrder($user_id, $instructions){
     $servername = "localhost";
     $username = "root";
@@ -489,7 +512,9 @@ function makeOrder($user_id, $instructions){
     } 
 }
 
+// Implemented by Eric Wendel as part of functionality set 3
 function addToOrder($order_id, $menu_item_id, $is_admin, $user_id){
+    // database connection info
     $servername = "localhost";
     $username = "root";
     $dbpassword = "";
@@ -502,14 +527,17 @@ function addToOrder($order_id, $menu_item_id, $is_admin, $user_id){
     die("Connection failed: " . $conn->connect_error);
     } 
 
+    // trim input whitespace
     $trim_order_id = trim($order_id);
     $trim_menu_item_id = trim($menu_item_id);
 
+    // check for empty input
     if($trim_order_id == "" || $trim_menu_item_id == ""){
         return "";
     }
 
     if($is_admin != 1){
+        // customers can only add to their own orders
         $sql3 = "SELECT * FROM orders WHERE order_id = " . $trim_order_id;
         $result = $conn->query($sql3);
         if ($result->num_rows > 0) {
@@ -533,7 +561,9 @@ function addToOrder($order_id, $menu_item_id, $is_admin, $user_id){
     } 
 }
 
+// Implemented by Eric Wendel as part of functionality set 3
 function deleteOrder($order_id, $is_admin, $user_id){
+    // database connection info
     $servername = "localhost";
     $username = "root";
     $dbpassword = "";
@@ -546,13 +576,16 @@ function deleteOrder($order_id, $is_admin, $user_id){
     die("Connection failed: " . $conn->connect_error);
     } 
 
+    // trim input whitespace
     $trimId = trim($order_id);
 
+    // check for empty input
     if($trimId == ""){
         return "";
     }
 
     if($is_admin != 1){
+        // If not admin, the user on the order must be the current user
         $sql3 = "SELECT * FROM orders WHERE order_id = " . $trimId;
         $result = $conn->query($sql3);
         if ($result->num_rows > 0) {
@@ -564,9 +597,11 @@ function deleteOrder($order_id, $is_admin, $user_id){
         }
     }
 
+    // delete order from order table
     $sql = "DELETE FROM orders WHERE order_id = " . $trimId;
 
     if ($conn->query($sql) === TRUE) {
+        // delete all connections in the orders_item table which refer to the deleted order
         $sql2 = "DELETE FROM orders_item WHERE order_id = " . $trimId;
         if ($conn->query($sql2) === TRUE) {
             $conn->close();
