@@ -1,3 +1,4 @@
+<!-- Implemented by Esben Egholm as part of functionality set 4 -->
 <?php
 // Include the "functions.php" file, which contains functions for interacting with the database.
   require "functions.php";

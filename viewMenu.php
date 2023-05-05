@@ -1,5 +1,4 @@
 <?php
-
   /* 
     This page allows users to create, view, update, and delete orders.
     This page is a part of functionality set 3.

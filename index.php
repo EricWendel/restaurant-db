@@ -1,5 +1,4 @@
 <?php
-
   /*
     This is the homepage of our application.
     This page is used for naviation.

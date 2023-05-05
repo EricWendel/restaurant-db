@@ -8,7 +8,7 @@
     This file was contributed to by all team members.
  */
 
- // // Implemented by Varun Somarouthu as functionality set 1
+ // Implemented by Varun Somarouthu as functionality set 1
 function makeUser($first_name, $last_name, $email, $password, $is_admin){
     $servername = "localhost";
     $username = "root";
@@ -238,7 +238,7 @@ function makeMenuItem($item_name, $size, $price){
     $conn = new mysqli($servername, $username, $dbpassword, $dbname);
     // Check connection
     if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+        die("Connection failed: " . $conn->connect_error);
     } 
 
     // trim whitespace from input
@@ -286,7 +286,7 @@ function updateMenuItem($item_id, $item_name, $size, $price, $nameCheck, $sizeCh
     $conn = new mysqli($servername, $username, $dbpassword, $dbname);
     // Check connection
     if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+        die("Connection failed: " . $conn->connect_error);
     } 
 
     // trim whitespace on the form inputs
@@ -358,7 +358,7 @@ function deleteMenuItem($item_id){
     $conn = new mysqli($servername, $username, $dbpassword, $dbname);
     // Check connection
     if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+        die("Connection failed: " . $conn->connect_error);
     } 
 
     // trim whitespace from inputs
@@ -392,7 +392,7 @@ function updateUser($user_id, $first_name, $last_name, $email, $password, $is_ad
     $conn = new mysqli($servername, $username, $dbpassword, $dbname);
     // Check connection
     if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+        die("Connection failed: " . $conn->connect_error);
     } 
 
     $trimId = trim($user_id);
@@ -471,7 +471,7 @@ function deleteUser($user_id){
     $conn = new mysqli($servername, $username, $dbpassword, $dbname);
     // Check connection
     if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+        die("Connection failed: " . $conn->connect_error);
     } 
 
     $trimId = trim($user_id);
@@ -505,7 +505,7 @@ function makeOrder($user_id, $instructions){
     $conn = new mysqli($servername, $username, $dbpassword, $dbname);
     // Check connection
     if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+        die("Connection failed: " . $conn->connect_error);
     } 
 
     $trimInstr = trim($instructions);
@@ -587,7 +587,7 @@ function deleteOrder($order_id, $is_admin, $user_id){
     $conn = new mysqli($servername, $username, $dbpassword, $dbname);
     // Check connection
     if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+        die("Connection failed: " . $conn->connect_error);
     } 
 
     // trim input whitespace
@@ -629,6 +629,7 @@ function deleteOrder($order_id, $is_admin, $user_id){
     } 
 }
 
+// Implemented by Esben Egholm as part of functionality set 4
 function createReview($user_id, $date_posted_day, $date_posted_month, $date_posted_year, $star_rating, $subject_contents, $main_contents) {
     // Define connection details for the database
     $servername = "localhost";
@@ -692,6 +693,7 @@ function createReview($user_id, $date_posted_day, $date_posted_month, $date_post
     $conn->close();
 }
 
+// Implemented by Esben Egholm as part of functionality set 4
 function deleteReview($review_id){
     $servername = "localhost";
     $username = "root";
@@ -729,6 +731,7 @@ function deleteReview($review_id){
     }
 }
 
+// Implemented by Esben Egholm as part of functionality set 4
 function updateReview($review_id, $star_rating, $subject_contents, $main_contents) {
     $servername = "localhost";
     $username = "root";
